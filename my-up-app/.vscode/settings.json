@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "files.exclude": {
+    "target": true
+  }
+}

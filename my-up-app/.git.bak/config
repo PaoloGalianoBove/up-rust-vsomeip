@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[user]
+	email = devnull@example.com
+	name = Dev
+[remote "origin"]
+	url = https://github.com/PaoloGalianoBove/up-rust-vsomeip.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master

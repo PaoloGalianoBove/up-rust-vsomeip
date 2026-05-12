@@ -1,0 +1,56 @@
+################################################################################
+# Copyright (c) 2024 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+################################################################################
+
+[workspace]
+resolver = "2"
+members = [
+    "up-transport-vsomeip",
+    "vsomeip-proc-macro",
+    "vsomeip-sys",
+]
+
+[workspace.package]
+documentation = "https://github.com/eclipse-uprotocol/up-spec#readme"
+edition = "2021"
+exclude = [
+    "tests/*",
+    "tools/*",
+    ".devcontainer/*",
+    ".vscode/*",
+    ".github/*",
+    ".gitignore",
+]
+keywords = ["uProtocol", "SDK", "vsomeip", "SOMEIP"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/eclipse-uprotocol/up-transport-vsomeip-rust"
+rust-version = "1.82"
+version = "0.4.1"
+
+[workspace.dependencies]
+async-trait = { version = "0.1" }
+bimap = { version = "0.6.3" }
+bytes = { version = "1.5" }
+crossbeam-channel = { version = "0.5.13" }
+cxx = { version = "1.0" }
+lazy_static = { version = "1.4.0" }
+log = { version = "0.4.21", features = [] }
+once_cell = { version = "1.19.0" }
+protobuf = { version = "3.4.0" }
+regex = { version = "1.10" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+tokio = { version = "1.35.1", features = ["rt", "rt-multi-thread", "macros", "sync", "time", "tracing"] }
+up-rust = { version = "0.9.0" }
+vsomeip-proc-macro = { version = "0.4.0", path = "vsomeip-proc-macro" }
+vsomeip-sys = { version = "0.4.0", path = "vsomeip-sys", default-features = false }

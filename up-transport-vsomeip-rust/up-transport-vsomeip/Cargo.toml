@@ -1,0 +1,52 @@
+################################################################################
+# Copyright (c) 2024 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+################################################################################
+
+[package]
+name = "up-transport-vsomeip"
+description = "Layer-1 uTransport implementation for vsomeip (SOME/IP)"
+documentation.workspace = true
+edition.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+readme = "../README.md"
+
+[features]
+default = ["bundled"]
+bundled = ["vsomeip-sys/bundled"]
+
+[dependencies]
+async-trait = { workspace = true }
+bimap = { workspace = true }
+bytes = { workspace = true }
+crossbeam-channel = { workspace = true }
+cxx = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+up-rust = { workspace = true }
+vsomeip-proc-macro = { workspace = true }
+vsomeip-sys = { workspace = true }
+lazy_static = { workspace = true }
+protobuf = { workspace = true }
+log = { workspace = true }
+once_cell = { workspace = true }
+futures = "0.3.30"
+tempfile = "3.16.0"
+
+[dev-dependencies]
+env_logger = { version = "0.11.3" }
+hello-world-protos = { path = "../example-utils/hello-world-protos" }
+test-case = { version = "3.3" }

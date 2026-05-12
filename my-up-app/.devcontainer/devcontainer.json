@@ -1,0 +1,17 @@
+{
+  "name": "my-up-app Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/rust:1",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y cmake clang pkg-config protobuf-compiler libssl-dev && rustup component add rustfmt clippy || true && cargo build || true",
+  "remoteUser": "vscode",
+  "forwardPorts": [],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-vscode-remote.remote-containers"
+      ]
+    }
+  }
+}

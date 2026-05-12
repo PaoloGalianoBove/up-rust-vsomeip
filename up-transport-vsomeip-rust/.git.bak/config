@@ -1,0 +1,19 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[submodule]
+	active = .
+[remote "origin"]
+	url = https://github.com/eclipse-uprotocol/up-transport-vsomeip-rust.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+	vscode-merge-base = origin/main
+[submodule "vsomeip-sys/vsomeip"]
+	url = https://github.com/COVESA/vsomeip.git
+[user]
+	email = devnull@example.com
+	name = Dev

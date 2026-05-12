@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 278ab26415559d6cb61f40facd21de822032cc83 Paolo <paolo@paolo-Cyborg-15-A13VE.(none)> 1778488985 +0200	clone: from https://github.com/eclipse-uprotocol/up-transport-vsomeip-rust.git
+278ab26415559d6cb61f40facd21de822032cc83 4ca9fde029379e7b1c3bc3e5912827e25c65a647 Dev <devnull@example.com> 1778576207 +0000	commit: Add .devcontainer and .vscode for reproducible dev environment

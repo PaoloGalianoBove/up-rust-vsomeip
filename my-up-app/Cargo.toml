@@ -1,0 +1,9 @@
+[package]
+name = "my-up-app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+up-transport-vsomeip = { path = "../up-transport-vsomeip-rust/up-transport-vsomeip" }
+log = "0.4"
+env_logger = "0.10"
