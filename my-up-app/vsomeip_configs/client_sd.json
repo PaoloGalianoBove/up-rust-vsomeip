@@ -1,0 +1,28 @@
+{
+  "device": "eth0",
+  "unicast": "0.0.0.0",
+  "netmask": "255.255.255.0",
+  "port": 30492,
+  "applications": [
+    {
+      "name": "0x4321",
+      "id": "0x4321"
+    }
+  ],
+  "services": [],
+  "service_discovery": {
+    "enabled": true,
+    "multicast": "224.224.224.0",
+    "port": 30490,
+    "protocol": "udp",
+    "initial_delay_min": 100,
+    "initial_delay_max": 150,
+    "repetitions_base": 3,
+    "repetitions_max": 3,
+    "cyclic_delay": 3000,
+    "request_response_delay": 1500,
+    "offer_delay": 100,
+    "find_delay": 100,
+    "diagnosis": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "unicast": "0.0.0.0",
+  "netmask": "255.255.255.0",
+  "port": 30491,
+  "applications": [
+    {
+      "name": "0x5678",
+      "id": "0x5678"
+    }
+  ],
+  "services": [
+    {
+      "service": "0x6000",
+      "instance": "0x0001",
+      "endpoint": "service:30491"
+    }
+  ]
+}

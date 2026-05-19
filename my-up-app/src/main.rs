@@ -1,7 +1,6 @@
-use log::info;
-
 fn main() {
     env_logger::init();
-    info!("Starting my-up-app using up-transport-vsomeip");
-    println!("Scaffold app ready. Replace with real logic.");
+    println!("Run one of the binaries instead:");
+    println!("  cargo run --bin service");
+    println!("  cargo run --bin client");
 }

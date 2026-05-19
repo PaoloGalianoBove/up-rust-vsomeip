@@ -1,0 +1,6 @@
+target
+up-transport-vsomeip-rust/target
+my-up-app/target
+.git
+.gitignore
+*.swp

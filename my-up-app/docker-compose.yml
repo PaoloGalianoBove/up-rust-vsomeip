@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  service:
+    build:
+      context: ..
+      dockerfile: my-up-app/Dockerfile.app
+    environment:
+      RUST_LOG: info,trace=debug
+      # Choose one:
+      # - Service Discovery (multicast SD): recommended
+      VSOMEIP_CONFIG: /app/vsomeip_configs/service_sd.json
+      # - Hardcoded TCP endpoint:
+      # VSOMEIP_CONFIG: /app/vsomeip_configs/service_tcp.json
+    ports:
+      - "30491:30491"
+      - "30490:30490/udp"  # SD multicast port
+    networks:
+      - uprotocol
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "30491"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+    command: /app/bin/service
+
+  client:
+    build:
+      context: ..
+      dockerfile: my-up-app/Dockerfile.app
+    environment:
+      RUST_LOG: info,trace=debug
+      # Choose one (must match service mode):
+      # - Service Discovery:
+      VSOMEIP_CONFIG: /app/vsomeip_configs/client_sd.json
+      # - Hardcoded TCP endpoint:
+      # VSOMEIP_CONFIG: /app/vsomeip_configs/client_tcp.json
+    ports:
+      - "30492:30492"
+      - "30490:30490/udp"  # SD multicast port
+    networks:
+      - uprotocol
+    depends_on:
+      service:
+        condition: service_healthy
+    command: /app/bin/client
+
+networks:
+  uprotocol:
+    driver: bridge
