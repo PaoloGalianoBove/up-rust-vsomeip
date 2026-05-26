@@ -49,15 +49,6 @@ async fn main() -> Result<(), UStatus> {
     );
 
     let mut iteration = 0;
-    // Wait longer before the first request to allow SD to populate routing table
-    println!("Waiting 2seconds for Service Discovery to populate routing table...");
-    for remaining in (1..=2).rev() {
-        if remaining % 5 == 0 {
-            println!("  {} seconds remaining...", remaining);
-        }
-        tokio::time::sleep(Duration::from_secs(1)).await;
-    }
-    println!("SD wait complete. Starting method invocations...");
     
     loop {
         // regular pacing between attempts

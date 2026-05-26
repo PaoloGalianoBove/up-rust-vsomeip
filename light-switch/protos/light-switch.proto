@@ -1,0 +1,21 @@
+syntax = "proto3";
+package light_switch;
+
+enum LightStatus {
+  OFF = 0;
+  SIDE_LIGHTS = 1;
+  LOW_BEAMS = 2;
+  HIGH_BEAMS = 3;
+}
+
+message SwitchRequest {
+  LightStatus status = 1;
+}
+
+message SwitchResponse {
+  LightStatus status = 1;
+}
+
+service LightSwitchService {
+  rpc Switch (SwitchRequest) returns (SwitchResponse);
+}

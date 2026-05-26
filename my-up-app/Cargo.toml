@@ -11,3 +11,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
 up-rust = "0.9.0"
 hello-world-protos = { path = "../up-transport-vsomeip-rust/example-utils/hello-world-protos" }
 async-trait = "0.1"
+
+[build-dependencies]
+prost-build = "0.11"
+tonic-build = "0.9"

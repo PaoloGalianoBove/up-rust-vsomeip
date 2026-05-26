@@ -18,7 +18,10 @@ RUN apt-get update && \
         git \
         curl \
         vim \
+        net-tools \
+        iputils-ping \
         findutils \
+        protobuf-compiler \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Parametri utente/gruppo, crea solo se necessari (safe idempotence)
@@ -40,24 +43,24 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
 ENV PATH="/home/$USERNAME/.cargo/bin:${PATH}"
 
 # 4. Copia i sorgenti (ignora target/ per Docker!)
-COPY ./my-up-app /home/$USERNAME/my-up-app
+COPY ./light-switch /home/$USERNAME/light-switch
 COPY ./up-transport-vsomeip-rust /home/$USERNAME/up-transport-vsomeip-rust
 
-WORKDIR /home/$USERNAME/my-up-app
+WORKDIR /home/$USERNAME/light-switch
 
 # 5. Rileva e imposta la versione stdlib C++ corretta
 RUN CPP_STD_VER=$(ls /usr/include/c++/ | grep -E '^[0-9]+$' | head -1) && \
     echo "export GENERIC_CPP_STDLIB_PATH=/usr/include/c++/$CPP_STD_VER" >> $HOME/.bashrc && \
     echo "export ARCH_SPECIFIC_CPP_STDLIB_PATH=/usr/include/x86_64-linux-gnu/c++/$CPP_STD_VER" >> $HOME/.bashrc
-RUN rm -rf /home/$USERNAME/my-up-app/target*
-RUN sudo chown -R ubuntu:ubuntu /home/$USERNAME/my-up-app
+RUN rm -rf /home/$USERNAME/light-switch/target*
+RUN sudo chown -R ubuntu:ubuntu /home/$USERNAME/light-switch
 ARG CPP_STD_VER=13
 ENV GENERIC_CPP_STDLIB_PATH="/usr/include/c++/${CPP_STD_VER}"
 ENV ARCH_SPECIFIC_CPP_STDLIB_PATH="/usr/include/x86_64-linux-gnu/c++/${CPP_STD_VER}"
 RUN cargo build
 
 # 6. Lavora direttamente nella cartella del progetto
-WORKDIR /home/$USERNAME/my-up-app
+WORKDIR /home/$USERNAME/light-switch
 
 # 9. Esponi porte vsomeip
 EXPOSE 30491 30492 30490/udp
