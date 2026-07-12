@@ -1,3 +1,0 @@
-0000000000000000000000000000000000000000 fe8a719851fb9337c3ff49750787bb4ecc34d9e6 Dev <devnull@example.com> 1778575680 +0000	commit (initial): Initial scaffold of my-up-app using up-transport-vsomeip
-fe8a719851fb9337c3ff49750787bb4ecc34d9e6 3d5a1b5aba49040acb75e0fb0ff50e3118cc24f4 Dev <devnull@example.com> 1778575835 +0000	commit: first commit
-3d5a1b5aba49040acb75e0fb0ff50e3118cc24f4 2a3c4a7f762a07eae9db8ffbe72cedf1fc6d0a0f Dev <devnull@example.com> 1778576101 +0000	commit: Add .devcontainer and .vscode settings for reproducible dev environment

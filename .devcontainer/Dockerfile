@@ -16,19 +16,27 @@ RUN apt-get update && \
         g++ \
         git \
         curl \
-        vim && \
+        wget \
+        vim \
+        protobuf-compiler && \
     rm -rf /var/lib/apt/lists/*
 
-# 2. Crea utente ubuntu con sudo senza password (se non c’è già)
+# 2. Crea o configura l'utente con sudo senza password
 ARG USERNAME=ubuntu
 ARG USER_UID=1000
 ARG USER_GID=1000
-RUN if ! id -u $USERNAME > /dev/null 2>&1; then \
+RUN if id -u $USERNAME > /dev/null 2>&1; then \
+        usermod -u $USER_UID $USERNAME && \
+        groupmod -g $USER_GID $USERNAME; \
+    else \
         groupadd --gid $USER_GID $USERNAME && \
-        useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
-        echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
-        chmod 0440 /etc/sudoers.d/$USERNAME; \
-    fi
+        useradd --uid $USER_UID --gid $USER_GID -m $USERNAME; \
+    fi && \
+    mkdir -p /home/$USERNAME && \
+    chown -R $USER_UID:$USER_GID /home/$USERNAME && \
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME
+
 
 # 3. Passa all’utente developer per rustup
 USER $USERNAME
