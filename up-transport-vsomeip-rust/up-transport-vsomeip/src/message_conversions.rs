@@ -235,12 +235,14 @@ where {
 
         let (commstatus, vsomeip_msg_type) = {
             if let Some(commstatus) = umsg.attributes.commstatus {
-                (
-                    commstatus.enum_value_or(UCode::UNIMPLEMENTED),
-                    message_type_e::MT_ERROR,
-                )
+                let status_val = commstatus.enum_value_or(UCode::UNIMPLEMENTED);
+                if status_val == UCode::OK {
+                    (UCode::OK, message_type_e::MT_RESPONSE)
+                } else {
+                    (status_val, message_type_e::MT_ERROR)
+                }
             } else {
-                (UCode::UNIMPLEMENTED, message_type_e::MT_RESPONSE)
+                (UCode::OK, message_type_e::MT_RESPONSE)
             }
         };
 
@@ -597,4 +599,50 @@ impl VsomeipMessageToUMessage {
     }
 }
 
-// TODO: Add unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{ClientId, SomeIpRequestId, SessionId, UProtocolReqId};
+    use up_rust::{UAttributes, UMessageType, UUID};
+    use std::sync::Arc;
+
+    struct MockCorrelationRegistry;
+    impl RpcCorrelationRegistry for MockCorrelationRegistry {
+        fn retrieve_session_id(&self, _client_id: ClientId) -> SessionId { 0 }
+        fn insert_ue_request_correlation(&self, _someip_request_id: SomeIpRequestId, _uprotocol_req_id: &UProtocolReqId, _source_uri: &UUri) -> Result<(), UStatus> { Ok(()) }
+        fn remove_ue_request_correlation(&self, _someip_request_id: SomeIpRequestId) -> Result<(UProtocolReqId, UUri), UStatus> {
+            Ok((UProtocolReqId::new(), UUri::default()))
+        }
+        fn insert_me_request_correlation(&self, _uprotocol_req_id: UProtocolReqId, _someip_request_id: SomeIpRequestId) -> Result<(), UStatus> { Ok(()) }
+        fn remove_me_request_correlation(&self, _uprotocol_req_id: &UProtocolReqId) -> Result<SomeIpRequestId, UStatus> { Ok(0) }
+    }
+
+    #[tokio::test]
+    async fn test_umsg_response_to_vsomeip_message_mapping() {
+        // Build a mock successful RPC response UMessage
+        let mut umsg = UMessage::default();
+        let mut attributes = UAttributes::default();
+        attributes.id = Some(UUID::new()).into();
+        attributes.reqid = Some(UUID::new()).into();
+        attributes.type_ = UMessageType::UMESSAGE_TYPE_RESPONSE.into();
+        attributes.source = Some(UUri::try_from_parts("linux", 0x1234, 1, 0x0001).unwrap()).into();
+        attributes.sink = Some(UUri::try_from_parts("linux", 0x4321, 1, 0x0000).unwrap()).into();
+        // commstatus is None (Success)
+        attributes.commstatus = None.into();
+        umsg.attributes = Some(attributes).into();
+
+        // Create the vsomeip runtime wrapper
+        let runtime_wrapper = vsomeip_sys::glue::make_runtime_wrapper(vsomeip::runtime::get());
+
+        // Perform translation
+        let vsomeip_msg = UMessageToVsomeipMessage::umsg_response_to_vsomeip_message(
+            &umsg,
+            Arc::new(MockCorrelationRegistry),
+            &runtime_wrapper,
+        ).await.unwrap();
+
+        // Assert that the Return Code is E_OK (0x00)
+        let return_code = vsomeip_msg.get_message_base_pinned().get_return_code();
+        assert_eq!(return_code, vsomeip::return_code_e::E_OK);
+    }
+}

@@ -12,6 +12,7 @@
   "services": [
     {
       "service": "0x1511",
+      "reliable": "30491",
       "methods": ["0x0001", "0x0002"]
     }
   ],

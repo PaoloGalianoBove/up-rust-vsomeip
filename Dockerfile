@@ -66,6 +66,11 @@ ENV GENERIC_CPP_STDLIB_PATH="/usr/include/c++/${CPP_STD_VER}"
 ENV ARCH_SPECIFIC_CPP_STDLIB_PATH="/usr/include/x86_64-linux-gnu/c++/${CPP_STD_VER}"
 RUN cargo build
 
+# 5b. Copia le librerie condivise vsomeip in /usr/lib per il dynamic linker
+USER root
+RUN vsomeip_lib_dir=$(find /home/$USERNAME/light-switch/target/ -name "libvsomeip3.so.3" -exec dirname {} \; | head -n 1) && cp -d $vsomeip_lib_dir/libvsomeip3* /usr/lib/ && ldconfig
+USER $USERNAME
+
 # 6. Lavora direttamente nella cartella del progetto
 WORKDIR /home/$USERNAME/light-switch
 
